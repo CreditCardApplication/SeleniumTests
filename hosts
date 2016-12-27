@@ -1,0 +1,15 @@
+---
+
+# Host file 
+
+[java]
+localhost
+
+[jenkin]
+localhost
+
+[maven]
+localhost
+
+[git]
+localhost

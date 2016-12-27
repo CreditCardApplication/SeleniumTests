@@ -1,0 +1,9 @@
+---
+
+# Ansible playbook to install apache maven 3
+
+- hosts: maven
+  become: yes
+
+  roles:
+    - { role: maven }

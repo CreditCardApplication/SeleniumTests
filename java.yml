@@ -1,0 +1,9 @@
+---
+
+# Ansible role to install Oracle Java 7
+
+- hosts: java
+  become: yes
+
+  roles:
+    - {role: java} 
