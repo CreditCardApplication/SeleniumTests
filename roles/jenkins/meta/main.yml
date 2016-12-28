@@ -1,0 +1,8 @@
+---
+
+# Dependencies role, for jenkins need to install java, git
+
+ dependencies:
+   - { role: git }
+   - { role: java }
+
