@@ -13,3 +13,6 @@ localhost
 
 [git]
 localhost
+
+[tomcat]
+localhost

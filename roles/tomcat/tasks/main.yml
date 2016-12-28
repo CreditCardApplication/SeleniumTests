@@ -1,0 +1,54 @@
+---
+
+# Ansible role to install Tomcat
+
+  - name: Install libselinux-python
+    yum: name=libselinux-python state=installed
+
+  #- name: Stop tomcat just in case
+  #  shell: 'pkill -f tomcat'
+  #  ignore_errors: yes
+  # when: 
+  #- service: name=tomcat state=stopped
+
+  - name: Create tomcat group
+    group: name=tomcat state=present 
+ 
+  - name: Download and unarchive tomcat
+    unarchive:
+      src: "http://archive.apache.org/dist/tomcat/tomcat-{{ tomcat_version|first() }}/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
+      dest: "/opt"
+      copy: no
+
+  - name: Create tomcat symlink
+    file: path=/opt/tomcat state=link src=/opt/apache-tomcat-{{ tomcat_version }} force=yes
+
+  - name: Create tomcat user
+    user: name=tomcat home={{ tomcat_user_home }} uid={{ tomcat_uid }} shell=/bin/sh group=tomcat state=present
+    ignore_errors: True
+ 
+  - name: Set tomcat file permissions
+    file: path=/opt/apache-tomcat-{{ tomcat_version }} owner={{ tomcat_user }} group=tomcat recurse=yes
+
+  - name: Create tomcat init script
+    template: src=tomcat.sh dest=/etc/init.d/tomcat owner=root group=root mode=0766
+    
+  - name: Configure Tomcat server
+    template: src=server.xml.{{ tomcat_version|first() }} dest={{ catalina_home }}/conf/server.xml backup=yes
+
+  - name: Configure Tomcat users
+    template: src=tomcat-users.xml dest={{ catalina_home }}/conf/
+
+  - name: Start tomcat service
+    shell: /etc/init.d/tomcat start
+
+  - name: wait for tomcat to start
+    wait_for: port={{ http_port }} timeout=60
+
+
+
+
+
+
+
+
