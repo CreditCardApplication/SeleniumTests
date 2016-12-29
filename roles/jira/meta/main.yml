@@ -1,0 +1,7 @@
+---
+
+# Dependencies role, for JIRA need to install java
+
+ dependencies:
+   - { role: java }
+

@@ -1,0 +1,15 @@
+---
+
+# vars to install JIRA
+jira_version: 6.4.14
+jira_bitness: 64
+jira_baseurl: http://www.atlassian.com/software/jira/downloads/binary
+jira_installer: atlassian-jira-{{ jira_version }}.tar.gz
+jira_user: jira
+jira_catalina_port: 8085
+
+# use postgresql or mysql
+jira_dbconnector: mysql
+jira_tmp: /var/tmp
+jira_installto: /opt
+jira_datadir: /opt/jira-data

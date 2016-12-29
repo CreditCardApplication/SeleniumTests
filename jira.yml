@@ -1,0 +1,9 @@
+---
+
+# Ansible playbook to install Jira
+
+- hosts: jira
+  become: yes
+
+  roles:
+    - { role: jira }

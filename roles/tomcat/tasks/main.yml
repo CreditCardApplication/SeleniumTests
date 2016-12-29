@@ -5,12 +5,6 @@
   - name: Install libselinux-python
     yum: name=libselinux-python state=installed
 
-  #- name: Stop tomcat just in case
-  #  shell: 'pkill -f tomcat'
-  #  ignore_errors: yes
-  # when: 
-  #- service: name=tomcat state=stopped
-
   - name: Create tomcat group
     group: name=tomcat state=present 
  
@@ -19,9 +13,6 @@
       src: "http://archive.apache.org/dist/tomcat/tomcat-{{ tomcat_version|first() }}/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
       dest: "/opt"
       copy: no
-
-  - name: Create tomcat symlink
-    file: path=/opt/tomcat state=link src=/opt/apache-tomcat-{{ tomcat_version }} force=yes
 
   - name: Create tomcat user
     user: name=tomcat home={{ tomcat_user_home }} uid={{ tomcat_uid }} shell=/bin/sh group=tomcat state=present
