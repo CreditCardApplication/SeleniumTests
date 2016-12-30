@@ -4,7 +4,7 @@
 RUN_AS=root
 
 # JIRA Linux service controller script
-JIRA_HOME={{ jira_installto }}/atlassian-${prog}-{{ jira_version }}-standalone/bin
+JIRA_HOME={{ jira_installto }}/{{ jira_folder_name}}/bin
 
 jiractl() {
         op=$1

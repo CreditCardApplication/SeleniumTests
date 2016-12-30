@@ -16,7 +16,7 @@
     register: fetch
   
   - name: Ensure consistent file ownership
-    file: path={{ jira_installto }}/atlassian-jira-{{ jira_version }}-standalone recurse=true
+    file: path={{ jira_installto }}/{{ jira_folder_name }} recurse=true
         owner={{ jira_user }} group={{ jira_user }} 
 
   - name: Ensure data dir exists
@@ -25,14 +25,14 @@
   
   - name: Set data dir in tomcat config
     lineinfile:
-      dest: "{{ jira_installto }}/atlassian-jira-{{ jira_version }}-standalone/atlassian-jira/WEB-INF/classes/jira-application.properties"
+      dest: "{{ jira_installto }}/{{ jira_folder_name }}/atlassian-jira/WEB-INF/classes/jira-application.properties"
       regexp: "^jira.home"
       line: "jira.home={{ jira_datadir }}"
       state: present
 
   - name: Ensure logs symlink exists
     file: 
-      src: "{{ jira_installto }}/atlassian-jira-{{ jira_version }}-standalone/logs"
+      src: "{{ jira_installto }}/{{ jira_folder_name }}/logs"
       path: /var/log/jira
       state: link
   
@@ -40,7 +40,7 @@
     template: src=service.init.j2 dest=/etc/init.d/jira owner=root group=root mode=0755
 
   - name: Jira config to Tomcat settings
-    template: src=server.xml.j2 dest={{ jira_installto }}/atlassian-jira-{{ jira_version }}-standalone/conf/server.xml owner={{ jira_user }} group={{ jira_user }} mode=0644
+    template: src=server.xml.j2 dest={{ jira_installto }}/{{ jira_folder_name }}/conf/server.xml owner={{ jira_user }} group={{ jira_user }} mode=0644
 
   - name: Ensure service is set to run
     service: name=jira state=restarted enabled=yes
