@@ -1,9 +1,9 @@
 ---
 #Role Java vars
 
-download_url: http://download.oracle.com/otn-pub/java/jdk/7u79-b15/jdk-7u79-linux-x64.tar.gz
+download_url: http://download.oracle.com/otn-pub/java/jdk/8u111-b14/jdk-8u111-linux-x64.tar.gz
 download_folder: /opt
-java_name: "{{download_folder}}/jdk1.7.0_79"
-java_archive: "{{download_folder}}/jdk-7u79-linux-x64.tar.gz"
+java_name: "{{download_folder}}/jdk1.8.0_111"
+java_archive: "{{download_folder}}/jdk-8u111-linux-x64.tar.gz"
 java_env_file: "/etc/profile.d/java.sh"
 
