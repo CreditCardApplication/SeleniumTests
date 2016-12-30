@@ -1,0 +1,12 @@
+---
+
+# Ansible playbook to install git
+
+- hosts: all
+  become: yes
+
+  roles:
+    - {role: git}
+    - {role: java}
+
+

@@ -15,7 +15,10 @@ localhost
 localhost
 
 [tomcat]
-localhost
+vm-dev
 
 [jira]
 localhost
+
+[deploy-dev]
+10.0.0.5

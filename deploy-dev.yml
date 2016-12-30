@@ -1,0 +1,19 @@
+---
+- hosts: "{{ host }}"
+  gather_facts: false
+
+  tasks:
+  - name: "Deploying for {{ inventory_hostname }} !!!"
+    debug: "msg={{ inventory_hostname }}"
+ 
+  - name: Copying war file into webapps to access 
+    copy: src=/var/lib/jenkins/jobs/Credit-Card-Application/workspace/target/CreditCardApp.war dest=/opt/apache-tomcat-7.0.59/webapps/ force=yes
+    become: yes
+    become_user: root
+ 
+
+
+  #- name: Restart webapps
+  #  become_user: root
+  #  become: yes
+  #  service: name=tomcat state=restarted

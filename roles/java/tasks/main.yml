@@ -22,6 +22,7 @@
       unarchive:
         src: "{{java_archive}}"
         dest: "{{download_folder}}"
+        remote_src: yes
 
     - name: Fix ownership
       file: state=directory path={{java_name}} owner=root group=root recurse=yes
