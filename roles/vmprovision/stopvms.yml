@@ -2,20 +2,14 @@
   #remote_user: root
   connection: local
   tasks:
-    - name: Create Virtual Machine
+    - name: Stop Virtual Machine
       azure_rm_virtualmachine:
-        resource_group: devopsgroup
-        name: testvm10
-        vm_size: Standard_D1
+        resource_group: devops-resource-grp
+        name: testvm001
         ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
         password: xxxxx
         subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
-        #storage_account_name: devopsuser
         admin_username: devopsuser
         admin_password: xxxxx
-        image:
-          offer: CentOS
-          publisher: OpenLogic
-          sku: '7.2'
-          version: latest
-
+        started: no
+        
