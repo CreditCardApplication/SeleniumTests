@@ -2,25 +2,32 @@
 
 # Jenkins Configuration setup
 
-  - name: Create jenkins configuration for RedHat
+  - name: Create jenkins configuration
     file:
       path: /etc/sysconfig/jenkins
       state: touch
 
-  - name: Configure Jenkins Port for RedHat
+  - name: Configure Jenkins Port
     lineinfile:
       dest: /etc/sysconfig/jenkins
       regexp: ^JENKINS_PORT=
       line: JENKINS_PORT={{port}}
     register: config_changed
 
-  - name: Configure Jenkins Prefix for RedHat
+  - name: Configure Jenkins Prefix
     when: prefix is defined
     lineinfile:
       dest: /etc/sysconfig/jenkins
       regexp: ^JENKINS_ARGS=
       line: JENKINS_ARGS={{prefix}}
     register: config_changed
+
+  - name: Add jenkins user into sudoers for sudo access
+    lineinfile:
+      dest: /etc/sudoers
+      with_items:
+        - { line: 'jenkins  ALL=(ALL)   NOPASSWD: ALL' }
+        - { line: 'Defaults:jenkins !requiretty' }
 
   - name: Restart jenkins now
     service: name=jenkins state=restarted

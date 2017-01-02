@@ -1,16 +1,16 @@
 ---
 - hosts: "{{ host }}"
   gather_facts: false
+  become: true
 
   tasks:
   - name: "Deploying for {{ inventory_hostname }} !!!"
     debug: "msg={{ inventory_hostname }}"
  
   - name: Copying war file into webapps to access 
-    copy: src=/var/lib/jenkins/jobs/Credit-Card-Application/workspace/target/CreditCardApp.war dest=/opt/apache-tomcat-7.0.59/webapps/ force=yes
-    become: yes
     become_user: root
- 
+    become: true
+    copy: src=/var/lib/jenkins/workspace/Credit-Card-Application/target/CreditCardApp.war dest=/opt/apache-tomcat-7.0.59/webapps/ force=yes
 
 
   #- name: Restart webapps
