@@ -1,0 +1,7 @@
+---
+
+# Dependencies role, for sonarqube need to install java
+
+ dependencies:
+   - { role: java }
+

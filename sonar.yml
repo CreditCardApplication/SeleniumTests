@@ -1,0 +1,9 @@
+---
+
+# Ansible role to install SonarQube
+
+- hosts: sonar
+  become: yes
+
+  roles:
+    - {role: sonar} 

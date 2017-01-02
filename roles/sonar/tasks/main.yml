@@ -1,0 +1,35 @@
+---
+
+# Ansible role to install SonarQube
+
+  - name: Download Sonar.
+    get_url:
+      url: "{{ sonar_download_url }}"
+      dest: "{{ workspace }}/{{ sonar_version_directory }}.zip"
+
+  - name: Unzip Sonar.
+    unarchive:
+      src: "{{ workspace }}/{{ sonar_version_directory }}.zip"
+      dest: "{{ workspace }}"
+      copy: no
+
+  - name: Add sonar symlinks for service management.
+    file:
+      src: "{{ workspace }}/{{ sonar_version_directory }}/bin/linux-x86-64/sonar.sh"
+      dest: "{{ item }}"
+      state: link
+    with_items:
+      - /usr/bin/sonar
+      - /etc/init.d/sonar
+
+  # Sonar database setup and install
+  - include: mysql.yml
+
+  # Configure sonar
+  - include: configure.yml
+
+  - name: Ensure Sonar is running and set to start on boot.
+    service: name=sonar state=started enabled=yes
+
+  - name: Make sure Sonar is responding on the configured port.
+    wait_for: port=9000 delay=3 timeout=300
