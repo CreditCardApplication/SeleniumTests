@@ -85,7 +85,7 @@
                 storage_container: testvm001
                 storage_blob: testvm001.vhd
                 admin_username: devopsuser
-                admin_password: DevOps@12345
+                admin_password: xxxxx
                 network_interfaces: testvm001-nic
                 image:
                   offer: CentOS
