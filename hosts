@@ -21,4 +21,4 @@ vm-dev
 localhost
 
 [deploy-dev]
-10.0.0.5
+vm-dev
