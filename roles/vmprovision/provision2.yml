@@ -4,14 +4,14 @@
         - name: Create resource group
           azure_rm_resourcegroup:
                 ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
-                password: Tiger@123
+                password: xxxxx
                 subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
                 name: devops-resource-grp
                 location: eastus
         - name: Create storage account
           azure_rm_storageaccount:
                 ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
-                password: Tiger@123
+                password: xxxxx
                 subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
                 resource_group: devops-resource-grp
                 name: devopsstoragegrp
@@ -20,7 +20,7 @@
         - name: Create virtual network
           azure_rm_virtualnetwork:
                 ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
-                password: Tiger@123
+                password: xxxxx
                 subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
                 resource_group: devops-resource-grp
                 name: devops-resource-grp-vnet
@@ -29,7 +29,7 @@
         - name: Add subnet
           azure_rm_subnet:
                 ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
-                password: Tiger@123
+                password: xxxxx
                 subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
                 resource_group: devops-resource-grp
                 name: subnet001
@@ -39,7 +39,7 @@
         - name: Create public ip
           azure_rm_publicipaddress:
                 ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
-                password: Tiger@123
+                password: xxxxx
                 subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
                 resource_group: devops-resource-grp
                 allocation_method: Static
@@ -48,7 +48,7 @@
         - name: Create security group that allows SSH
           azure_rm_securitygroup:
                 ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
-                password: Tiger@123
+                password: xxxxx
                 subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
                 resource_group: devops-resource-grp
                 name: testvm001-nsg
@@ -63,7 +63,7 @@
         - name: Create NIC
           azure_rm_networkinterface:
                 ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
-                password: Tiger@123
+                password: xxxxx
                 subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
                 resource_group: devops-resource-grp
                 name: testvm001-nic
@@ -78,7 +78,7 @@
                 name: testvm001
                 vm_size: Standard_A0
                 ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
-                password: Tiger@123
+                password: xxxxx
                 public_ip_allocation_method: static
                 subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
                 storage_account: devopsstoragegrp
