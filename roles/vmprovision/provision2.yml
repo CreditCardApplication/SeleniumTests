@@ -1,14 +1,95 @@
-- hosts: localhost 
-  tasks: 
-   - local_action:
-      module: azure
-      subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
-      #management_cert_path: /root/.ssh/ssh_key.pem
-      name: spintest
-      role_size: Small
-      image: b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu_DAILY_BUILD-precise-12_04_3-LTS-amd64-server-20131205-en-us-30GB
-      location: 'East US'
-      user: ubuntu
-      password: ubuntu
-      storage_account: devopsuser
-      wait: yes
+- hosts: localhost
+  connection: local
+  tasks:
+        - name: Create resource group
+          azure_rm_resourcegroup:
+                ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
+                password: Tiger@123
+                subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
+                name: devops-resource-grp
+                location: eastus
+        - name: Create storage account
+          azure_rm_storageaccount:
+                ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
+                password: Tiger@123
+                subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
+                resource_group: devops-resource-grp
+                name: devopsstoragegrp
+                account_type: Standard_LRS
+
+        - name: Create virtual network
+          azure_rm_virtualnetwork:
+                ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
+                password: Tiger@123
+                subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
+                resource_group: devops-resource-grp
+                name: devops-resource-grp-vnet
+                address_prefixes: "10.10.0.0/16"
+
+        - name: Add subnet
+          azure_rm_subnet:
+                ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
+                password: Tiger@123
+                subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
+                resource_group: devops-resource-grp
+                name: subnet001
+                address_prefix: "10.10.0.0/24"
+                virtual_network: devops-resource-grp-vnet
+
+        - name: Create public ip
+          azure_rm_publicipaddress:
+                ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
+                password: Tiger@123
+                subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
+                resource_group: devops-resource-grp
+                allocation_method: Static
+                name: testvm001-ip
+
+        - name: Create security group that allows SSH
+          azure_rm_securitygroup:
+                ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
+                password: Tiger@123
+                subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
+                resource_group: devops-resource-grp
+                name: testvm001-nsg
+                rules:
+                  - name: SSH
+                    protocol: Tcp
+                    destination_port_range: 22
+                    access: Allow
+                    priority: 101
+                    direction: Inbound
+
+        - name: Create NIC
+          azure_rm_networkinterface:
+                ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
+                password: Tiger@123
+                subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
+                resource_group: devops-resource-grp
+                name: testvm001-nic
+                virtual_network: devops-resource-grp-vnet
+                subnet: subnet001
+                public_ip_name: testvm001-ip
+                security_group: testvm001-nsg
+
+        - name: Create virtual machine
+          azure_rm_virtualmachine:
+                resource_group: devops-resource-grp
+                name: testvm001
+                vm_size: Standard_A0
+                ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
+                password: Tiger@123
+                public_ip_allocation_method: static
+                subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
+                storage_account: devopsstoragegrp
+                storage_container: testvm001
+                storage_blob: testvm001.vhd
+                admin_username: devopsuser
+                admin_password: DevOps@12345
+                network_interfaces: testvm001-nic
+                image:
+                  offer: CentOS
+                  publisher: OpenLogic
+                  sku: '7.2'
+                  version: latest
+
