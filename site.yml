@@ -1,12 +1,48 @@
 ---
 
-# Ansible playbook to install git
-
-- hosts: all
+# Ansible playbook to install all
+- name: Install and configure git
+  hosts: git
   become: yes
-
   roles:
-    - {role: git}
-    - {role: java}
+    - {role: git, tags: ['git']}
+
+- name: Install and configure java
+  hosts: java
+  become: yes
+  roles:
+    - {role: java, tags: ['java']}
+
+- name: Install and configure maven
+  hosts: maven
+  become: yes
+  roles:
+    - {role: maven, tags: ['maven']}
+
+- name: Install and configure tomcat
+  hosts: tomcat
+  become: yes
+  roles:
+    - {role: tomcat, tags: ['tomcat']}
+
+- name: Install and configure jenkins
+  hosts: jenkins
+  become: yes
+  roles:
+    - {role: jenkins, tags: ['jenkins']}
+
+- name: Install and configure sonar
+  hosts: sonar
+  become: yes
+  roles:
+    - {role: sonar, tags: ['sonar']}
+
+- name: Install and configure jira
+  hosts: jira
+  become: yes
+  roles:
+    - {role: jira, tags: ['jira']}
+ 
+
 
 
