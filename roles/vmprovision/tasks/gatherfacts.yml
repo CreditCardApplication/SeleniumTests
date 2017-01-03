@@ -1,0 +1,9 @@
+- hosts: localhost
+  connection: local
+  tasks:
+    - debug: var=ansible_default_ipv4.address
+       - name     : Add new instance to host group
+         add_host :
+           hostname  : {{ item.public_ip }}
+           groupname : launched
+      with_items : azure.instances 

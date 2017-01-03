@@ -1,0 +1,11 @@
+---
+
+# Ansible playbook to provision vm
+
+- hosts: provision
+  connection: local
+  become: yes
+
+  roles:
+    - {role: vmprovision}
+

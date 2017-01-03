@@ -23,5 +23,5 @@ localhost
 [deploy-dev]
 vm-dev
 
-[sonar]
-vm-dev
+[provision]
+localhost

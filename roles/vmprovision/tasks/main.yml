@@ -1,0 +1,98 @@
+---
+
+    - name: Create resource group
+      azure_rm_resourcegroup:
+        ad_user: "{{ username }}"
+        password: "{{ passwd }}"
+        subscription_id: "{{ sub_id }}"
+        name: devops-resource-grp
+        location: eastus
+    - name: Create storage account
+      azure_rm_storageaccount:
+        ad_user: "{{ username }}"
+        password: "{{ passwd }}"
+        subscription_id: "{{ sub_id }}"
+        resource_group: devops-resource-grp
+        name: devopsstoragegrp
+        account_type: Standard_LRS
+
+    - name: Create virtual network
+      azure_rm_virtualnetwork:
+        ad_user: "{{ username }}"
+        password: "{{ passwd }}"
+        subscription_id: "{{ sub_id }}"
+        resource_group: devops-resource-grp
+        name: devops-resource-grp-vnet
+        address_prefixes: "10.10.0.0/16"
+
+    - name: Add subnet
+      azure_rm_subnet:
+        ad_user: "{{ username }}"
+        password: "{{ passwd }}"
+        subscription_id: "{{ sub_id }}"
+        resource_group: devops-resource-grp
+        name: subnet001
+        address_prefix: "10.10.0.0/24"
+        virtual_network: devops-resource-grp-vnet
+
+    - name: Create public ip
+      azure_rm_publicipaddress:
+        ad_user: "{{ username }}"
+        password: "{{ passwd }}"
+        subscription_id: "{{ sub_id }}"
+        resource_group: devops-resource-grp
+        allocation_method: Static
+        name: "{{ macname }}-ip"
+
+    - name: Create security group that allows SSH
+      azure_rm_securitygroup:
+        ad_user: "{{ username }}"
+        password: "{{ passwd }}"
+        subscription_id: "{{ sub_id }}"
+        resource_group: devops-resource-grp
+        name: "{{ macname }}-nsg"
+        rules:
+          - name: SSH
+            protocol: Tcp
+            destination_port_range: 22
+            access: Allow
+            priority: 101
+            direction: Inbound
+
+    - name: Create NIC
+      azure_rm_networkinterface:
+        ad_user: "{{ username }}"
+        password: "{{ passwd }}"
+        subscription_id: "{{ sub_id }}"
+        resource_group: devops-resource-grp
+        name: "{{ macname }}-nic"
+        virtual_network: devops-resource-grp-vnet
+        subnet: subnet001
+        public_ip_name: "{{ macname }}-ip"
+        security_group: "{{ macname }}-nsg"
+
+    - name: Create virtual machine
+      azure_rm_virtualmachine:
+        resource_group: devops-resource-grp
+        name: "{{ macname }}"
+        vm_size: Standard_D1
+        ad_user: "{{ username }}"
+        password: "{{ passwd }}"
+        subscription_id: "{{ sub_id }}"
+        public_ip_allocation_method: Static
+        storage_account: devopsstoragegrp
+        storage_container: "{{ macname }}"
+        storage_blob: "{{ macname }}.vhd"
+        admin_username: "{{ admin_user}}"
+        admin_password: "{{ admin_passwd }}"
+        network_interfaces: "{{ macname }}-nic"
+        image:
+          offer: CentOS
+          publisher: OpenLogic
+          sku: '7.2'
+          version: latest
+      register: azure_rm_virtualmachine
+
+    - name: Debug Azure output
+      debug:
+        var: azure_rm_virtualmachine
