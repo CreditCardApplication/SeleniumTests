@@ -6,8 +6,8 @@
       azure_rm_virtualmachine:
         resource_group: devopsgroup
         name: testvm001
-        ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
-        password: Tiger@123
-        subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
+        ad_user: xxxxx
+        password: XXXXX
+        subscription_id: xxxxx
         state: absent
         
