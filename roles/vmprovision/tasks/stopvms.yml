@@ -6,10 +6,10 @@
       azure_rm_virtualmachine:
         resource_group: devops-resource-grp
         name: testvm001
-        ad_user: vinodp@rahulrgaikwadoutlook.onmicrosoft.com
+        ad_user: xxxxx
         password: xxxxx
-        subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
-        admin_username: devopsuser
+        subscription_id: xxxxxx
+        admin_username: xxxxx
         admin_password: xxxxx
         started: no
         
