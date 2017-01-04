@@ -15,13 +15,20 @@ localhost
 localhost
 
 [tomcat]
-vm-dev
+#vm-dev
+vm-test
 
 [jira]
 localhost
 
+[confluence]
+vm-confluence
+
 [deploy-dev]
 vm-dev
+
+[deploy-test]
+vm-test
 
 [provision]
 localhost

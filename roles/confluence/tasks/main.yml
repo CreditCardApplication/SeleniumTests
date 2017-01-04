@@ -1,0 +1,51 @@
+---
+
+# Ansible role to install Confluence
+
+  - name: Create confluence group
+    group: name={{ confluence_user }} state=present 
+ 
+  - name: Create confluence user
+    user: name={{ confluence_user }} group={{ confluence_user }} state=present
+ 
+  - name: Fetch/Download confluence installer and unarchive
+    unarchive:
+      src: "{{ confluence_baseurl }}/{{ confluence_installer }}"
+      dest: "{{ confluence_installto }}"
+      copy: no
+    register: fetch
+  
+  - name: Ensure consistent file ownership
+    file: path={{ confluence_installto }}/{{ confluence_folder_name }} recurse=true
+        owner={{ confluence_user }} group={{ confluence_user }} 
+
+  - name: Ensure data dir exists
+    file: path={{ confluence_datadir }} state=directory
+        owner={{ confluence_user }} group={{ confluence_user }}
+  
+  - name: Set data dir in tomcat config
+    lineinfile:
+      dest: "{{ confluence_installto }}/{{ confluence_folder_name }}/confluence/WEB-INF/classes/confluence-init.properties"
+      regexp: "^confluence.home"
+      line: "confluence.home={{ confluence_datadir }}"
+      state: present
+
+  - name: Ensure logs symlink exists
+    file: 
+      src: "{{ confluence_installto }}/{{ confluence_folder_name }}/logs"
+      path: /var/log/confluence
+      state: link
+  
+  - name: Ensure service definition exists
+    template: src=service.init.j2 dest=/etc/init.d/confluence owner=root group=root mode=0755
+
+  - name: confluence config to Tomcat settings
+    template: src=server.xml.j2 dest={{ confluence_installto }}/{{ confluence_folder_name }}/conf/server.xml owner={{ confluence_user }} group={{ confluence_user }} mode=0644
+
+  - name: Ensure service is set to run
+    shell: /etc/init.d/confluence start
+
+
+
+
+

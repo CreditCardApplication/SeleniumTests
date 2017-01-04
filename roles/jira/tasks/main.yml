@@ -39,11 +39,11 @@
   - name: Ensure service definition exists
     template: src=service.init.j2 dest=/etc/init.d/jira owner=root group=root mode=0755
 
-  - name: Jira config to Tomcat settings
+  - name: jira config to Tomcat settings
     template: src=server.xml.j2 dest={{ jira_installto }}/{{ jira_folder_name }}/conf/server.xml owner={{ jira_user }} group={{ jira_user }} mode=0644
 
   - name: Ensure service is set to run
-    service: name=jira state=restarted
+    shell: /etc/init.d/jira start
 
 
 

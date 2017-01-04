@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# RUN_AS: The user to run confluence as
+RUN_AS=root
+
+# JIRA Linux service controller script
+JIRA_HOME={{ confluence_installto }}/{{ confluence_folder_name}}/bin
+
+confluencectl() {
+        op=$1
+        if [ "x$USER" != "x$RUN_AS" ]; then
+                su - "$RUN_AS" -c "cd $JIRA_HOME; ./${op}-confluence.sh"
+        else
+                cd $JIRA_HOME
+                ./${op}-confluence.sh
+        fi
+}
+
+case "$1" in
+        start)
+                confluencectl start
+                ;;
+        stop)
+                confluencectl stop
+                ;;
+        restart)
+                confluencectl stop
+                sleep 10
+                confluencectl start
+                ;;
+        *)
+                echo "Usage: $0 {start|stop|restart}"
+esac
+
+exit 0

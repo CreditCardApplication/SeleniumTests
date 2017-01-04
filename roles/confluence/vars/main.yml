@@ -1,0 +1,16 @@
+---
+
+# vars to install confluence
+confluence_version: 6.0.3
+confluence_bitness: 64
+confluence_baseurl: http://www.atlassian.com/software/confluence/downloads/binary
+confluence_installer: atlassian-confluence-{{ confluence_version }}.tar.gz
+confluence_folder_name: atlassian-confluence-{{ confluence_version }}
+confluence_user: confluence
+confluence_catalina_port: 8090
+
+# use postgresql or mysql
+confluence_dbconnector: mysql
+confluence_tmp: /var/tmp
+confluence_installto: /opt
+confluence_datadir: /opt/confluence-data
