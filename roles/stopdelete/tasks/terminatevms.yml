@@ -1,0 +1,14 @@
+---
+
+     - debug: "msg={{ username }}/{{ passwd }}/{{ sub_id }}"
+
+     - name: Terminate Virtual Machine
+       azure_rm_virtualmachine:
+         ad_user: "{{ username }}"
+         password: "{{ passwd }}"
+         subscription_id: "{{ sub_id }}"
+         resource_group: devops-resource-grp
+         name: "{{ macname }}"
+         state: absent
+         remove_on_absent: all
+        

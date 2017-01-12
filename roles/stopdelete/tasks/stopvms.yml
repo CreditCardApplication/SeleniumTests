@@ -1,0 +1,10 @@
+---
+    - name: Stop Virtual Machine
+      azure_rm_virtualmachine:
+        resource_group: devops-resource-grp
+        name: "{{ macname }}"
+        ad_user: "{{ username }}"
+        password: "{{ passwd }}"
+        subscription_id: "{{ sub_id }}"
+        started: no
+        
