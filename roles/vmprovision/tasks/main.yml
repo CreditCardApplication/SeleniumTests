@@ -1,5 +1,9 @@
 ---
 
-    - include: provision2.yml
+    - include: provision2.yml macname={{item}}
+      with_items:
+      - vm-test001
+      - vm-test002
+     
 
     #- include: ssh-key-share.yml
