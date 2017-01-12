@@ -9,9 +9,8 @@
         vm_size: Standard_D1
         ad_user: xxxxx
         password: xxxxx
-        subscription_id: 52682313-9683-468c-9c76-309ecc3eb348
-        #storage_account_name: devopsuser
-        admin_username: devopsuser
+        subscription_id: xxxxx
+        admin_username: xxxxx
         admin_password: xxxxx
         image:
           offer: CentOS
