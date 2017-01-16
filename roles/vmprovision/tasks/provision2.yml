@@ -8,7 +8,7 @@
         password: "{{ passwd }}"
         subscription_id: "{{ sub_id }}"
         name: devops-resource-grp
-        location: eastus
+        location: westus
     - name: Create storage account
       azure_rm_storageaccount:
         ad_user: "{{ username }}"
