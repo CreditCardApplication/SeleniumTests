@@ -14,6 +14,13 @@
       line: JENKINS_PORT={{port}}
     register: config_changed
 
+  - name: Configure Jenkins for $JAVA_HOME
+    lineinfile:
+      dest: /etc/sysconfig/jenkins
+      regexp: ^JENKINS_JAVA_CMD=
+      line: JENKINS_JAVA_CMD="{{ java_home }}/bin/java"
+    register: config_changed
+
   - name: Configure Jenkins Prefix
     when: prefix is defined
     lineinfile:
@@ -25,11 +32,14 @@
   - name: Add jenkins user into sudoers for sudo access
     lineinfile:
       dest: /etc/sudoers
-      with_items:
-        - { line: 'jenkins  ALL=(ALL)   NOPASSWD: ALL' }
-        - { line: 'Defaults:jenkins !requiretty' }
+      line: "{{ item.line }}"
+      create: yes
+      state: present
+    with_items:
+      - { line: 'jenkins  ALL=(ALL)   NOPASSWD: ALL' }
+      - { line: 'Defaults:jenkins !requiretty' }
 
   - name: Restart jenkins now
-    service: name=jenkins state=restarted
+    service: name=jenkins state=restarted enabled=yes
     when: config_changed.changed
 

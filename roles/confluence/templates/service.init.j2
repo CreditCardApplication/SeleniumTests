@@ -6,6 +6,8 @@ RUN_AS=root
 # JIRA Linux service controller script
 JIRA_HOME={{ confluence_installto }}/{{ confluence_folder_name}}/bin
 
+export JAVA_HOME={{ java_home }}
+
 confluencectl() {
         op=$1
         if [ "x$USER" != "x$RUN_AS" ]; then

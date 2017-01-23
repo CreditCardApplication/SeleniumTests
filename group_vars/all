@@ -1,3 +1,4 @@
 ---
 
 ansible_ssh_user: devopsuser
+java_home: /opt/jdk1.8.0_111
