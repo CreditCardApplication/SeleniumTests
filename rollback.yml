@@ -10,7 +10,7 @@
   - name: Copying war file into webapps to access 
     become_user: root
     become: true
-    copy: src=/var/lib/jenkins/workspace/Credit-Card-Application/CreditCardApp.war dest=/opt/apache-tomcat-7.0.59/webapps/ force=yes
+    copy: src=/var/lib/jenkins/workspace/NewCreditCardApplication/CreditCardApp.war dest=/opt/apache-tomcat-7.0.59/webapps/ force=yes
 
 
   #- name: Restart webapps
