@@ -7,42 +7,42 @@
         ad_user: "{{ username }}"
         password: "{{ passwd }}"
         subscription_id: "{{ sub_id }}"
-        name: devops-resource-grp
-        location: westus
-    - name: Create storage account
-      azure_rm_storageaccount:
-        ad_user: "{{ username }}"
-        password: "{{ passwd }}"
-        subscription_id: "{{ sub_id }}"
-        resource_group: devops-resource-grp
-        name: devopsstoragegrp
-        account_type: Standard_LRS
+        name: devopsgroup
+        location: eastus
+#    - name: Create storage account
+#      azure_rm_storageaccount:
+#        ad_user: "{{ username }}"
+#        password: "{{ passwd }}"
+#        subscription_id: "{{ sub_id }}"
+#        resource_group: devopsgroup
+#        name: devopsgroupdisks995
+#        account_type: Standard_LRS
 
     - name: Create virtual network
       azure_rm_virtualnetwork:
         ad_user: "{{ username }}"
         password: "{{ passwd }}"
         subscription_id: "{{ sub_id }}"
-        resource_group: devops-resource-grp
-        name: devops-resource-grp-vnet
-        address_prefixes: "10.10.0.0/16"
+        resource_group: devopsgroup
+        name: devopsgroup-vnet
+        address_prefixes: "10.0.0.0/24"
 
     - name: Add subnet
       azure_rm_subnet:
         ad_user: "{{ username }}"
         password: "{{ passwd }}"
         subscription_id: "{{ sub_id }}"
-        resource_group: devops-resource-grp
-        name: subnet001
-        address_prefix: "10.10.0.0/24"
-        virtual_network: devops-resource-grp-vnet
+        resource_group: devopsgroup
+        name: default
+        address_prefix: "10.0.0.0/24"
+        virtual_network: devopsgroup-vnet
 
     - name: Create public ip
       azure_rm_publicipaddress:
         ad_user: "{{ username }}"
         password: "{{ passwd }}"
         subscription_id: "{{ sub_id }}"
-        resource_group: devops-resource-grp
+        resource_group: devopsgroup
         allocation_method: Static
         name: "{{ macname }}-ip"
 
@@ -51,7 +51,7 @@
         ad_user: "{{ username }}"
         password: "{{ passwd }}"
         subscription_id: "{{ sub_id }}"
-        resource_group: devops-resource-grp
+        resource_group: devopsgroup
         name: "{{ macname }}-nsg"
         rules:
           - name: SSH
@@ -60,29 +60,37 @@
             access: Allow
             priority: 101
             direction: Inbound
+          - name: Jenkins
+            protocol: Tcp
+            destination_port_range: 8081
+            access: Allow
+            priority: 201
+            direction: Inbound
 
     - name: Create NIC
       azure_rm_networkinterface:
         ad_user: "{{ username }}"
         password: "{{ passwd }}"
         subscription_id: "{{ sub_id }}"
-        resource_group: devops-resource-grp
+        resource_group: devopsgroup
         name: "{{ macname }}-nic"
-        virtual_network: devops-resource-grp-vnet
-        subnet: subnet001
+        virtual_network: devopsgroup-vnet
+        subnet: default
         public_ip_name: "{{ macname }}-ip"
         security_group: "{{ macname }}-nsg"
+        private_ip_address: "{{ privip }}"
+        private_ip_allocation_method: Static
 
     - name: Create virtual machine
       azure_rm_virtualmachine:
-        resource_group: devops-resource-grp
+        resource_group: devopsgroup
         name: "{{ macname }}"
-        vm_size: Standard_D1
+        vm_size: Standard_DS1
         ad_user: "{{ username }}"
         password: "{{ passwd }}"
         subscription_id: "{{ sub_id }}"
         public_ip_allocation_method: Static
-        storage_account: devopsstoragegrp
+        storage_account: devopsgroupdisks995
         storage_container: "{{ macname }}"
         storage_blob: "{{ macname }}.vhd"
         admin_username: "{{ admin_user}}"
@@ -98,3 +106,7 @@
     - name: Debug Azure output
       debug:
         var: azure_rm_virtualmachine
+  
+    - name: Copy ssh file
+      command: sshpass -p "{{ admin_passwd }}" ssh-copy-id -i /home/{{ admin_user }}/.ssh/id_rsa.pub -o StrictHostKeyChecking=no "{{ admin_user }}"@"{{ privip }}"
+

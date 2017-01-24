@@ -15,8 +15,7 @@ localhost
 localhost
 
 [tomcat]
-#vm-dev
-vm-test
+vm-dev
 
 [jira]
 localhost
@@ -32,3 +31,9 @@ vm-test
 
 [provision]
 localhost
+
+[setupsudo]
+vm-test001
+
+#[nexus]
+#vm-dev

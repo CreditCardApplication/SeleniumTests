@@ -1,9 +1,6 @@
 ---
 
-    - include: provision2.yml macname={{item}}
+    - include: provision2.yml macname={{ item.macname }} privip={{ item.privip }} 
       with_items:
-      - vm-test001
-      - vm-test002
-     
-
-    #- include: ssh-key-share.yml
+      - { macname: 'vm-test001', privip: '10.0.0.100' }
+    

@@ -1,0 +1,16 @@
+---
+
+# Host file 
+
+[java]
+vm-test001
+
+[jenkins]
+vm-test001
+
+[maven]
+vm-test001
+
+[git]
+vm-test001
+
