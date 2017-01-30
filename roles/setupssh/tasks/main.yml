@@ -1,0 +1,19 @@
+---
+
+    - include_vars: "{{ playbook_dir }}/roles/vmprovision/vars/main.yml" 
+
+    - name: Set authorized key for user devopsuser copying it from current user
+      authorized_key:
+        user: devopsuser
+        state: present
+        key: "{{ lookup('file', '/home/{{ admin_user }}/.ssh/id_rsa.pub') }}"
+
+    - name: Add user to sudoers
+      become: yes
+      become_method: sudo
+      lineinfile:
+        dest: /etc/sudoers
+        insertafter: EOF
+        line: "{{ admin_user }} ALL=(ALL) NOPASSWD: ALL"
+        state: present
+        create: yes
