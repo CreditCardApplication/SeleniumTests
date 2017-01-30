@@ -1,0 +1,45 @@
+---
+    - name: Create Azure Deploy
+      azure_rm_deployment:
+        ad_user: "{{ username }}" 
+        password: "{{ passwd }}"
+        state: present
+        subscription_id: "{{ sub_id }}"
+        resource_group_name: devopsclegrp
+        parameters:
+          adminUsername:
+            value: "{{ admin_user }}"
+          sshKeyData:
+            value: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvJZ7sijmMvZx7xxIk/GF8YX/bLmV0xJbpJPCqGgpt5dGCAzhz3gcMlx2jtQQpQJLdHC47WO6ZJeZUIOy93yOvueoTVibIayCIIX79NAAgDZjxrGn0jXmN8UW+/iuTgFGbGn82bbdoYPSqYiJF5Y4EtkAuhFCmIGd2+jaX2L6QDef3OOiDPJzvmSbhwcgOMiFkAgyThz74ly8IHaf4uBmSEc2mo1CS8j4ZmdTkcbklJGAk0XMiidTHnCEZkgUg/orZjizss90dprIiCJSjz9vL9XSmUgbhBzXXDODHTpwe4OLd3fDYI72yZP/SshJ2VeFIalqLb3iRK8OcxS9bqbfF devopsuser@vm-controller"
+          vmName:
+            value: "{{ macname }}"
+          nicName:
+            value: "{{ macname }}-nic"
+          publicIPAddressName:
+            value: "{{ macname }}-pip"
+          osDiskName:
+            value: "{{ macname }}-osdisk"
+        template_link: 'https://raw.githubusercontent.com/rahulg17/demo_videos/master/customcentos.json'
+      register: azure
+
+    - name: Add new instance to host group
+      add_host:
+        hostname: "{{ item['ips'][0]['dns_settings'].fqdn }}"
+        groupname: azure_vms
+      with_items: "{{ azure.deployment.instances }}"
+    
+    - name: Add new hosts list to new inventory file
+      lineinfile:
+        dest: /opt/workspace/devops-tooling/newhosts
+        line: '[azurehosts]'
+        create: yes
+        state: present
+
+    - name: Add new instances to new inventory file
+      lineinfile:
+        dest: /opt/workspace/devops-tooling/newhosts
+        line: "{{ item['ips'][0]['dns_settings'].fqdn }}"
+        create: yes
+        state: present
+      with_items: "{{ azure.deployment.instances }}"
+

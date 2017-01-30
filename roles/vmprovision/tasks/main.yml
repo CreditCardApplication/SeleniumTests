@@ -1,6 +1,11 @@
 ---
 
-    - include: provision2.yml macname={{ item.macname }} privip={{ item.privip }} 
+    - include: custom.yml macname={{ item.macname }} 
       with_items:
-      - { macname: 'vm-test001', privip: '10.0.0.100' }
-    
+      - { macname: 'vm-test001' }
+      - { macname: 'vm-test002' }
+   
+    #- include: terminatevms.yml macname={{ item.macname }} privip={{ item.privip }}
+    #  with_items:
+    #      - { macname: 'vm-test001', privip: '10.0.0.100' } 
+    #  tags: delete
