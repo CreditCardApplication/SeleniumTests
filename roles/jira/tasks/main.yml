@@ -7,12 +7,13 @@
  
   - name: Create jira user
     user: name={{ jira_user }} group={{ jira_user }} state=present
- 
+
   - name: Fetch/Download jira installer and unarchive
     unarchive:
       src: "{{ jira_baseurl }}/{{ jira_installer }}"
       dest: "{{ jira_installto }}"
       copy: no
+      validate_certs: no
     register: fetch
   
   - name: Ensure consistent file ownership
