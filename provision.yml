@@ -3,25 +3,8 @@
 # Ansible playbook to provision vm
 
 - hosts: provision
-  tags: ['create']
   connection: local
   become: yes
        
-  roles:
-    - {role: vmprovision}
-  
-
-- hosts: setupsudo
-  tags: ['create']
-  become: yes
-
-  roles:
-    - {role: setupsudo}
-
-- hosts: provision
-  tags: ['delete']
-  connection: local
-  become: yes
-
   roles:
     - {role: vmprovision}

@@ -1,7 +1,7 @@
 ---
 
 # vars to install JIRA
-jira_version: 7.2.7
+jira_version: 7.3.1
 jira_bitness: 64
 jira_baseurl: http://www.atlassian.com/software/jira/downloads/binary
 jira_installer: atlassian-jira-software-{{ jira_version }}.tar.gz

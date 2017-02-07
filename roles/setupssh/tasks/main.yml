@@ -17,3 +17,8 @@
         line: "{{ admin_user }} ALL=(ALL) NOPASSWD: ALL"
         state: present
         create: yes
+
+    - name: Patch OS
+      yum:
+        name: '*'
+        state: latest
