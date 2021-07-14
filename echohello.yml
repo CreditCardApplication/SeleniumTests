@@ -4,7 +4,6 @@
     - name: Hello Message
       debug:
         msg: "Hello World!"
-	
     - name: Create file
       shell: echo "`date`" > date
 
